@@ -3,6 +3,8 @@
 import { Schema, model } from "mongoose";
 import { IUser } from "./user.interface";
 
+// Model এর মধ্যে ডাটাবেজের Quary হয়।
+
 const userSchema = new Schema<IUser>({
   id: { type: String, required: true, unique: true },
   role: { type: String, required: true },
@@ -32,3 +34,5 @@ const userSchema = new Schema<IUser>({
   permanentAddress: { type: String, required: true },
 });
 const User = model<IUser>("user", userSchema);
+
+export default User;
