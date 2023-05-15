@@ -1,6 +1,6 @@
 import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const app: Application = express();
 // Using cors
@@ -16,10 +16,10 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
   Step1: Interface
   Step2: Schema
   Step3: Model
-  Ster4: Database Quary
+  Ster4: Database on Model Quary
   */
-  // res.send("Hello World!");
-  // next();
+  res.send("Hello World!");
+  next();
   // Creating an Interface
   interface IUser {
     id: string;
@@ -42,7 +42,7 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
   // Creating Schema using interface
 
   const userSchema = new Schema<IUser>({
-    id: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
     role: { type: String, required: true },
     password: { type: String, required: true },
     name: {
@@ -69,6 +69,28 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
     presentAddress: { type: String, required: true },
     permanentAddress: { type: String, required: true },
   });
+  const User = model<IUser>("user", userSchema);
+  const createUserToDb = async () => {
+    const user = new User({
+      id: "9009877",
+      role: "Student",
+      password: "abulbaba",
+      name: {
+        firstName: "Parvez",
+        lastName: "Rahman",
+      },
+      // dateOfBirth: "1/08/2000",
+      gender: "male",
+      email: "abd@gmail.com",
+      contactNo: "01777788888",
+      emergencyContactNo: "0188877656554",
+      presentAddress: "UAE",
+      permanentAddress: "Dhaka,Bangladesh",
+    });
+    await user.save();
+    console.log(user);
+  };
+  createUserToDb();
 });
 
 export default app;
